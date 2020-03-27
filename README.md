@@ -30,12 +30,13 @@ This is list of known compatible USB hubs:
 | Belkin             | F5U101                                               | 4     | 2.0 |`0451:2046`| 2005    | 2010 |
 | Belkin             | F5U701-BLK                                           | 7     | 2.0 |           | 2008    | 2012 |
 | Buffalo            | BSH4A05U3BK                                          | 4     | 3.0 |`05E3:0610`| 2015    |      |
+| Bytecc             | BT-UH340                                             | 4     | 3.0 |`2109:8110`| 2010    |      |
 | Circuitco          | Beagleboard-xM (internal USB hub)                    | 4     | 2.0 |`0424:9514`| 2010    |      |
 | Club3D             | CSV-3242HD Dual Display Docking Station              | 4     | 3.0 |`2109:2811`| 2015    |      |
 | CyberPower         | CP-H420P                                             | 4     | 2.0 |`0409:0059`| 2004    |      |
 | Cypress            | CY4608 HX2VL development kit                         | 4     | 2.0 |`04B4:6570`| 2012    |      |
 | D-Link             | DUB-H4 rev B (silver)                                | 4     | 2.0 |`05E3:0605`| 2005    | 2010 |
-| D-Link             | DUB-H4 rev D (black). Note: rev A,C not supported    | 4     | 2.0 |`05E3:0608`| 2012    |      |
+| D-Link             | DUB-H4 rev D,E (black). Note: rev A,C not supported  | 4     | 2.0 |`05E3:0608`| 2012    |      |
 | D-Link             | DUB-H7 rev A (silver)                                | 7     | 2.0 |`2001:F103`| 2005    | 2010 |
 | D-Link             | DUB-H7 rev D (black). Note: rev B,C not supported    | 7     | 2.0 |`05E3:0608`| 2012    |      |
 | Dell               | P2416D 24" QHD Monitor                               | 4     | 2.0 |           | 2017    |      |
@@ -79,7 +80,8 @@ exact product model and add output from `uhubctl`.
 
 Note that quite a few modern motherboards have built-in root hubs that
 do support this feature - you may not even need to buy any external hub.
-WARNING: turning off built-in USB ports may cut off your keyboard or mouse,
+
+> :warning: Turning off built-in USB ports may cut off your keyboard or mouse,
 so be careful what ports you are turning off!
 
 
@@ -107,11 +109,18 @@ is using `winusb.sys` driver, which according to Microsoft does not support
 [necessary USB control requests](https://social.msdn.microsoft.com/Forums/sqlserver/en-US/f680b63f-ca4f-4e52-baa9-9e64f8eee101).
 This may be fixed if `libusb` starts supporting different driver on Windows.
 
-First, you need to install library libusb-1.0 (version 1.0.12 or later):
+First, you need to install library libusb-1.0 (version 1.0.12 or later, 1.0.16 or later is recommended):
 
 * Ubuntu: `sudo apt-get install libusb-1.0-0-dev`
 * Redhat: `sudo yum install libusb1-devel`
 * MacOSX: `brew install libusb`, or `sudo port install libusb-devel`
+  > :warning: `libusb-1.0.23` is [broken](https://github.com/libusb/libusb/issues/707) on MacOS Catalina!
+  You have to install `libusb-1.0.22` until [libusb issue 707](https://github.com/libusb/libusb/issues/707) is fixed,
+  or use this workaround to force use of older Mojave build:
+
+      brew uninstall --ignore-dependencies libusb
+      brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/5314f1d/Formula/libusb.rb
+
 * FreeBSD: libusb is included by default
 * NetBSD: `sudo pkgin install libusb1 gmake pkg-config`
 * Windows: TBD?
@@ -248,6 +257,12 @@ You can use option `-r N` where N is some number from 10 to 1000 to fix this -
 `uhubctl` will try to turn power off many times in quick succession, and it should suppress that.
 This may be eventually fixed in kernel, see more discussion [here](https://bit.ly/2JzczjZ).
 
+If your device is USB mass storage, invoking `udisksctl` before calling `uhubctl`
+might help to mitigate this issue:
+
+    sudo udisksctl power-off --block-device /dev/disk/...`
+    sudo uhubctl -a off ...
+
 
 #### _Multiple 4-port hubs are detected, but I only have one 7-port hub connected_
 
@@ -273,20 +288,18 @@ For reference, supported Raspberry Pi models have following internal USB topolog
         uhubctl -l 1-1 -p 2 -a 0
 
     Trying to control ports `3`,`4`,`5` will not do anything.
-    Port `1` controls power for Ethernet+Wifi.
+    Port `1` controls power for Ethernet+WiFi.
 
 ##### Raspberry Pi 3B+
 
-  * Main hub `1-1`, all 4 ports ganged, all controlled by port `2` (turns off secondary hub ports as well):
+  * Main hub `1-1`, all 4 ports ganged, all controlled by port `2` (turns off secondary hub ports as well).
+    Port `1` connects hub `1-1.1` below, ports `2` and `3` are wired outside, port `4` not wired.
 
         uhubctl -l 1-1 -p 2 -a 0
 
-  * Secondary hub `1-1.1` (daisy-chained to main): 3 independently controlled ports,
-    port `1` is used for Ethernet+wifi, and ports `2,3` support per-port power switching:
+  * Secondary hub `1-1.1` (daisy-chained to main): 3 ports,
+    port `1` is used for Ethernet+WiFi, and ports `2` and `3` are wired outside.
 
-        uhubctl -l 1-1.1 -p 3 -a 0
-
-    In other words, 2 out of total 4 ports wired outside of `3B+` support proper independent power switching.
 
 ##### Raspberry Pi 4B
 
