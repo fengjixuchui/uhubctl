@@ -21,6 +21,7 @@ This is list of known compatible USB hubs:
 | AmazonBasics       | HU3641V1 ([RPi issue](https://goo.gl/CLt46M))        | 4     | 3.0 |`2109:2811`| 2013    |      |
 | AmazonBasics       | HU3770V1 ([RPi issue](https://goo.gl/CLt46M))        | 7     | 3.0 |`2109:2811`| 2013    |      |
 | AmazonBasics       | HU9002V1SBL ([RPi issue](https://goo.gl/CLt46M))     | 10    | 3.1 |`2109:2817`| 2018    |      |
+| AmazonBasics       | HUC9002V1ESL ([RPi issue](https://goo.gl/CLt46M))    | 10    | 3.1 |`2109:2817`| 2018    |      |
 | Apple              | Thunderbolt Display 27" (internal USB hub)           | 6     | 2.0 |           | 2011    | 2016 |
 | Apple              | USB Keyboard With Numeric Pad (internal USB hub)     | 3     | 2.0 |           | 2011    |      |
 | Asus               | Z87-PLUS Motherboard (onboard USB hub)               | 4     | 3.0 |           | 2013    | 2016 |
@@ -48,6 +49,7 @@ This is list of known compatible USB hubs:
 | IOI                | U3H415E1                                             | 4     | 3.0 |           | 2012    |      |
 | j5create           | JUH470 (works only in USB2 mode)                     | 3     | 3.0 |`05E3:0610`| 2014    |      |
 | Juiced Systems     | 6HUB-01                                              | 7     | 3.0 |`0BDA:0411`| 2014    | 2018 |
+| LG Electronics     | 38WK95C-W monitor                                    | 4     | 3.0 |`0451:8142`| 2018    |      |
 | Lenovo             | ThinkPad Ultra Docking Station (40A20090EU)          | 6     | 2.0 |`17EF:100F`| 2015    |      |
 | Lenovo             | ThinkPad Ultra Docking Station (40AJ0135EU)          | 7     | 3.1 |`17EF:3070`| 2018    |      |
 | Lenovo             | ThinkPad X200 Ultrabase 42X4963                      | 3     | 2.0 |`17EF:1005`| 2008    | 2011 |
@@ -76,13 +78,11 @@ This table is by no means complete.
 If your hub works with `uhubctl`, but is not listed above, please report it
 by opening new issue at https://github.com/mvp/uhubctl/issues,
 so we can add it to supported table. In your report, please provide
-exact product model and add output from `uhubctl`.
+exact product model and add output from `uhubctl`
+and please test VBUS off support as described below in FAQ.
 
 Note that quite a few modern motherboards have built-in root hubs that
 do support this feature - you may not even need to buy any external hub.
-
-> :warning: Turning off built-in USB ports may cut off your keyboard or mouse,
-so be careful what ports you are turning off!
 
 
 USB 3.0 duality note
@@ -150,6 +150,9 @@ This means operate on default smart hub and turn power off (`-a off`, or `-a 0`)
 on port 2 (`-p 2`). Supported actions are `off`/`on`/`cycle` (or `0`/`1`/`2`).
 `cycle` means turn power off, wait some delay (configurable with `-d`) and turn it back on.
 Ports can be comma separated list, and may use `-` for ranges e.g. `2`, or `2,4`, or `2-5`, or `1-2,5-8`.
+
+> :warning: Turning off built-in USB ports may cut off your keyboard or mouse,
+so be careful which ports you are turning off!
 
 If you have more than one smart USB hub connected, you should choose
 specific hub to control using `-l` (location) parameter.
@@ -308,13 +311,13 @@ to vl805 00137ac or later to make power switching work on RPi 4B.
 
   * USB2 hub `1`, 1 port, only connects hub `1-1` below.
 
-  * USB2 hub `1-1`, 4 ports ganged, dual to USB3 hub `2` below, all ports controlled by port 4:
+  * USB2 hub `1-1`, 4 ports ganged, dual to USB3 hub `2` below:
 
-        uhubctl -l 1-1 -p 4 -a 0
+        uhubctl -l 1-1 -a 0
 
-  * USB3 hub `2`, 4 ports ganged, dual to USB2 hub `1-1` above, all ports controlled by port 4:
+  * USB3 hub `2`, 4 ports ganged, dual to USB2 hub `1-1` above:
 
-        uhubctl -l 2 -p 4 -a 0
+        uhubctl -l 2 -a 0
 
   * USB2 hub `3`, 1 port, OTG controller:
 
@@ -336,14 +339,16 @@ Notable projects using uhubctl
 | [Build Status Light](https://goo.gl/3GA82o)              | Create a build status light in under 10 minutes       |
 | [Buildenlights](https://git.io/fj1FC)                    | GitLab/GitHub project build status as green/red light |
 | [Weather Station](https://goo.gl/3b1FzC)                 | Reset Weather Station when it freezes                 |
-| [sysmoQMOD](https://goo.gl/8wvcKA)                       | Reset cellular modems when necessary                  |
+| [sysmoQMOD](https://bit.ly/2VtWrVt)                      | Reset cellular modems when necessary                  |
 | [Smog Sensor](https://bit.ly/2EMwgCk)                    | Raspberry Pi based smog sensor power reset            |
 | [Terrible Cluster](https://goo.gl/XjiXFu)                | Power on/off Raspberry Pi cluster nodes as needed     |
-| [Ideal Music Server](https://bit.ly/2UJq6Z9)             | Turn off unused USB ports to improve audio quality    |
+| [Ideal Music Server](https://bit.ly/39MeVFQ)             | Turn off unused USB ports to improve audio quality    |
 | [USB drives with no phantom load](https://goo.gl/qfrmGK) | Power USB drives only when needed to save power       |
 | [USB drive data recovery](https://goo.gl/4MddLr)         | Recover data from failing USB hard drive              |
 | [Control power to 3D printer](https://git.io/fh5Tr)      | OctoPrint web plugin for USB power control            |
 | [USB fan for Raspberry Pi](https://bit.ly/2TRV6sM)       | Control USB fan to avoid Raspberry Pi overheating     |
+| [Raspberry Pi Reboot Router](https://bit.ly/3aNbQqs)     | Automatically reboot router if internet isn't working |
+| [Control USB Lamp With Voice](https://bit.ly/2VtW2SX)    | Voice Control of USB Lamp using Siri and Raspberry Pi |
 
 
 Copyright
