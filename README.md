@@ -20,8 +20,7 @@ This is list of known compatible USB hubs:
 |:-------------------|:-----------------------------------------------------|:------|:----|:----------|:--------|:-----|
 | AmazonBasics       | HU3641V1 ([RPi issue](https://goo.gl/CLt46M))        | 4     | 3.0 |`2109:2811`| 2013    |      |
 | AmazonBasics       | HU3770V1 ([RPi issue](https://goo.gl/CLt46M))        | 7     | 3.0 |`2109:2811`| 2013    |      |
-| AmazonBasics       | HU9002V1SBL ([RPi issue](https://goo.gl/CLt46M))     | 10    | 3.1 |`2109:2817`| 2018    |      |
-| AmazonBasics       | HUC9002V1ESL ([RPi issue](https://goo.gl/CLt46M))    | 10    | 3.1 |`2109:2817`| 2018    |      |
+| AmazonBasics       | HU9002V1SBL, HU9002V1ESL, HUC9002V1SBL, HUC9002V1EBL | 10    | 3.1 |`2109:2817`| 2018    |      |
 | Apple              | Thunderbolt Display 27" (internal USB hub)           | 6     | 2.0 |           | 2011    | 2016 |
 | Apple              | USB Keyboard With Numeric Pad (internal USB hub)     | 3     | 2.0 |           | 2011    |      |
 | Asus               | Z87-PLUS Motherboard (onboard USB hub)               | 4     | 3.0 |           | 2013    | 2016 |
@@ -29,7 +28,6 @@ This is list of known compatible USB hubs:
 | B+B SmartWorx      | USH304                                               | 4     | 3.0 |`04B4:6506`| 2017    |      |
 | Basler             | 2000036234                                           | 4     | 3.0 |`0451:8046`| 2016    |      |
 | Belkin             | F5U101                                               | 4     | 2.0 |`0451:2046`| 2005    | 2010 |
-| Belkin             | F5U701-BLK                                           | 7     | 2.0 |           | 2008    | 2012 |
 | Buffalo            | BSH4A05U3BK                                          | 4     | 3.0 |`05E3:0610`| 2015    |      |
 | Bytecc             | BT-UH340                                             | 4     | 3.0 |`2109:8110`| 2010    |      |
 | Circuitco          | Beagleboard-xM (internal USB hub)                    | 4     | 2.0 |`0424:9514`| 2010    |      |
@@ -39,7 +37,7 @@ This is list of known compatible USB hubs:
 | D-Link             | DUB-H4 rev B (silver)                                | 4     | 2.0 |`05E3:0605`| 2005    | 2010 |
 | D-Link             | DUB-H4 rev D,E (black). Note: rev A,C not supported  | 4     | 2.0 |`05E3:0608`| 2012    |      |
 | D-Link             | DUB-H7 rev A (silver)                                | 7     | 2.0 |`2001:F103`| 2005    | 2010 |
-| D-Link             | DUB-H7 rev D (black). Note: rev B,C not supported    | 7     | 2.0 |`05E3:0608`| 2012    |      |
+| D-Link             | DUB-H7 rev D,E (black). Note: rev B,C not supported  | 7     | 2.0 |`05E3:0608`| 2012    |      |
 | Dell               | P2416D 24" QHD Monitor                               | 4     | 2.0 |           | 2017    |      |
 | Dell               | UltraSharp 1704FPT 17" LCD Monitor                   | 4     | 2.0 |`0424:A700`| 2005    | 2015 |
 | Dell               | UltraSharp U2415 24" LCD Monitor                     | 5     | 3.0 |           | 2014    |      |
@@ -69,6 +67,7 @@ This is list of known compatible USB hubs:
 | Renesas            | uPD720202 PCIe USB 3.0 host controller               | 2     | 3.0 |           | 2013    |      |
 | Rosewill           | RHUB-210                                             | 4     | 2.0 |`0409:005A`| 2011    | 2014 |
 | Sanwa Supply       | USB-HUB14GPH                                         | 4     | 1.1 |           | 2001    | 2003 |
+| Seagate            | Backup Plus Hub STEL8000100                          | 2     | 3.0 |`0BC2:AB44`| 2016    |      |
 | StarTech           | ST4200USBM                                           | 4     | 2.0 |`0409:005A`| 2004    |      |
 | Sunix              | SHB4200MA                                            | 4     | 2.0 |`0409:0058`| 2006    | 2009 |
 | Targus             | PAUH212U                                             | 7     | 2.0 |           | 2004    | 2009 |
@@ -271,7 +270,7 @@ might help to mitigate this issue:
 
 Many hub manufacturers build their USB hubs using basic 4 port USB chips.
 E.g. to make 7 port hub, they daisy-chain two 4 port hubs - 1 port is lost to daisy-chaining,
-so it makes it 4+4-1=7 port hub. Simularly, 10 port hub could be built as 3 4-port hubs
+so it makes it 4+4-1=7 port hub. Similarly, 10 port hub could be built as 3 4-port hubs
 daisy-chained together, which gives 4+4+4-2=10 usable ports.
 
 Note that you should never try to change power state for ports used to daisy-chain internal hubs together.
