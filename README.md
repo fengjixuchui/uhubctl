@@ -57,6 +57,7 @@ This is list of known compatible USB hubs:
 | Maplin             | A08CQ                                                | 7     | 2.0 |`0409:0059`| 2008    | 2011 |
 | Microchip          | EVB-USB2517                                          | 7     | 2.0 |           | 2008    |      |
 | Moxa               | Uport-407                                            | 7     | 2.0 |`110A:0407`| 2009    |      |
+| NVidia             | Jetson Nano B01 ([details](https://git.io/JJaFR))    | 4     | 3.0 |           | 2019    |      |
 | Phidgets           | HUB0003_0                                            | 7     | 2.0 |`1A40:0201`| 2017    |      |
 | Plugable           | USB3-HUB7BC                                          | 7     | 3.0 |`2109:0813`| 2015    |      |
 | Plugable           | USB3-HUB7C                                           | 7     | 3.0 |`2109:0813`| 2015    |      |
@@ -68,7 +69,6 @@ This is list of known compatible USB hubs:
 | Rosewill           | RHUB-210                                             | 4     | 2.0 |`0409:005A`| 2011    | 2014 |
 | Sanwa Supply       | USB-HUB14GPH                                         | 4     | 1.1 |           | 2001    | 2003 |
 | Seagate            | Backup Plus Hub STEL8000100                          | 2     | 3.0 |`0BC2:AB44`| 2016    |      |
-| StarTech           | ST4200USBM                                           | 4     | 2.0 |`0409:005A`| 2004    |      |
 | Sunix              | SHB4200MA                                            | 4     | 2.0 |`0409:0058`| 2006    | 2009 |
 | Targus             | PAUH212U                                             | 7     | 2.0 |           | 2004    | 2009 |
 | Texas Instruments  | TUSB4041PAPEVM                                       | 4     | 2.1 |`0451:8142`| 2015    |      |
@@ -305,8 +305,9 @@ For reference, supported Raspberry Pi models have following internal USB topolog
 
 ##### Raspberry Pi 4B
 
- > :warning: You may need to [update firmware](https://www.raspberrypi.org/documentation/hardware/raspberrypi/booteeprom.md)
-to vl805 00137ac or later to make power switching work on RPi 4B.
+ > :warning: If your VL805 firmware is older than `00137ad` (check with `sudo rpi-eeprom-update`),
+you have to [update firmware](https://www.raspberrypi.org/documentation/hardware/raspberrypi/booteeprom.md)
+to make power switching work on RPi 4B.
 
   * USB2 hub `1`, 1 port, only connects hub `1-1` below.
 
